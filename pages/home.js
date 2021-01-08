@@ -55,12 +55,24 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            slider1ActiveSlide: SLIDER_1_FIRST_ITEM
+            sliderActiveSlide: 0
         };
     }
 
+    static navigationOptions = ({ route }) => {
+        const { params = {} } = route
+        return {
+            headerShown: false,
+            gesturesEnabled: false
+        };
+    };
+
     // _renderItem({ item, index }) {
-    //     return <SliderEntry data={item} even={(index + 1) % 2 === 0} />;
+    //     return <SliderEntry 
+    //     data={item} 
+    //     even={(index + 1) % 2 === 0}
+    //     style={{width: 150, height: 100, backgroundColor: "#677995"}}
+    //      />;
     // }
 
     _renderItemWithParallax({ item, index }, parallaxProps) {
@@ -135,11 +147,11 @@ class Home extends Component {
                 <Carousel
                     data={ENTRIES2}
                     renderItem={this._renderItem}
-                    // sliderWidth={sliderWidth}
-                    // itemWidth={itemWidth}
-                    sliderHeight={sliderHeight}
-                    itemHeight={itemHeight}
-                    vertical={true}
+                    sliderWidth={sliderWidth}
+                    itemWidth={itemWidth}
+                    // sliderHeight={sliderHeight}
+                    // itemHeight={itemHeight}
+                    // vertical={true}
                     // inactiveSlideScale={0.95}
                     // inactiveSlideOpacity={1}
                     // enableMomentum={true}
@@ -152,6 +164,7 @@ class Home extends Component {
                 //     tension: 40
                 // }}
                 />
+
             </View>
         );
     }
@@ -205,7 +218,7 @@ class Home extends Component {
     gradient() {
         return (
             <LinearGradient
-                colors={[colors.background1, colors.background2]}
+                colors={["#fff", "#DBE2EB"]}
                 startPoint={{ x: 1, y: 0 }}
                 endPoint={{ x: 0, y: 1 }}
                 style={styles.gradient}
@@ -215,11 +228,17 @@ class Home extends Component {
 
     _renderItem = ({ item, index }) => {
         return (
-            <View style={{}}>
-                <Image
-                    source={{ uri: item.illustration }}
-                    style={{ width: "100%", height: 300 }}
-                />
+            <View style={{
+                width: 180, height: 110, backgroundColor: "#677995", margin: 20,
+                borderRadius: 16
+            }}>
+                {this.state.sliderActiveSlide == index ? (<LinearGradient
+                    colors={["#5E80F4", "#7160F1"]}
+                    startPoint={{ x: 1, y: 0 }}
+                    endPoint={{ x: 0, y: 1 }}
+                    style={[styles.gradient, { borderRadius: 16 }]}
+                />) : null}
+
             </View>
         );
     }
@@ -239,9 +258,61 @@ class Home extends Component {
                 <View style={styles.container}>
                     <StatusBar
                         translucent={true}
-                        backgroundColor={'rgba(0, 0, 0, 0.3)'}
-                        barStyle={'light-content'}
+                        backgroundColor={'transparent'}
+                        barStyle={'dark-content'}
                     />
+                    <View style={{ flex: 3 }}>
+                        <LinearGradient
+                            colors={["#fff", "#DBE2EB"]}
+                            startPoint={{ x: 1, y: 0 }}
+                            endPoint={{ x: 0, y: 1 }}
+                            style={styles.gradient}
+                        />
+                        <View style={{height:100}}>
+
+                        </View>
+                        <CircularCarousel
+                            dataSource={dataSource}
+                            onItemPress={(item) => {
+                                console.log(item);
+                            }}
+                            style={{  }}
+                            containerDim={{ height: 480, width: width }}
+                            itemDim={{ width: 150, height: 100 }}
+                            radius={80}
+                        />
+
+                    </View>
+                    <View style={{ flex: 1, backgroundColor: "#fff" }}>
+
+                        <View style={{ height: 170, width: width }}>
+                            <Carousel
+                                data={ENTRIES2}
+                                renderItem={this._renderItem}
+                                sliderWidth={sliderWidth}
+                                itemWidth={200}
+                                // sliderHeight={100}
+                                // itemHeight={itemHeight}
+                                // vertical={true}
+                                // inactiveSlideScale={0.95}
+                                // inactiveSlideOpacity={1}
+                                // enableMomentum={true}
+                                // activeSlideAlignment={'start'}
+                                containerCustomStyle={[styles.slider, {}]}
+                                // contentContainerCustomStyle={styles.sliderContentContainer}
+                                // activeAnimationType={'spring'}
+                                // activeAnimationOptions={{
+                                //     friction: 4,
+                                //     tension: 40
+                                // }}
+                                onSnapToItem={(index) => this.setState({ sliderActiveSlide: index })}
+                            />
+                        </View>
+
+
+                    </View>
+
+
                     {/* <View
                         style={[
                             StyleSheet.absoluteFill,
@@ -251,34 +322,7 @@ class Home extends Component {
                             },
                         ]}
                     >
-                        <Rotary
-                            index={this.state.index}
-                            onIndexChanged={(index)=>{
-                                this.setState({
-                                    index:index
-                                })
-                            }}
-                            radius={100}
-                            data={data}
-                            renderItem={({ item: uri, index }) => (
-                                <View
-                                    style={{
-                                        width: 100,
-                                        height: 100,
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    <Image
-                                        style={{
-                                            width: 80,
-                                            height: 80,
-                                        }}
-                                        source={{ uri }}
-                                    />
-                                </View>
-                            )}
-                        />
+                       
                         <View
                             style={{
                                 width: 50,
@@ -310,33 +354,22 @@ class Home extends Component {
                             <Text style={styles.text}>3</Text>
                         </View>
                     </Carousell> */}
-                    <View
-                        style={[styles.scrollview, { flex: 1,marginTop:0 }]}
+                    {/* <View
+                        style={[styles.scrollview, { flex: 1, marginTop: 0 }]}
                         scrollEventThrottle={200}
                         directionalLockEnabled={true}
-                    >
-                        <CircularCarousel
-                            dataSource={dataSource}
-                            onItemPress={(item) => {
-                                console.log(item);
-                            }}
-                            style={{backgroundColor:"black"}}
-                            containerDim={{ height: 450, width: width }}
-                            itemDim={{ width: 140, height: 100 }}
-                            radius={80}
-                        />
-                        {/* { example1 } */}
-                        {/* { example2 } */}
-                        {/* { example3 } */}
-                        {/* { example4 } */}
-                        {/* { example5 } */}
-                        {/* { example6 } */}
-                        {/* { example7 } */}
-                        {/* { example8 } */}
-                    </View>
-                    {/* <View style={{ backgroundColor: "#FFFFFF", width: "100%", height: 300 }}>
+                    > */}
+                    {/* */}
+                    {/* { example1 } */}
+                    {/* { example2 } */}
+                    {/* { example3 } */}
+                    {/* { example4 } */}
+                    {/* { example5 } */}
+                    {/* { example6 } */}
+                    {/* { example7 } */}
+                    {/* { example8 } */}
+                    {/* </View> */}
 
-                    </View> */}
                 </View>
             </SafeAreaView>
         );

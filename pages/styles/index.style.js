@@ -3,8 +3,8 @@ import { StyleSheet } from 'react-native';
 export const colors = {
     black: '#1a1917',
     gray: '#888888',
-    background1: '#535B76',
-    background2: '#50627D'
+    background1: '#fff',
+    background2: '#fff'
 };
 
 export default StyleSheet.create({
@@ -53,7 +53,7 @@ export default StyleSheet.create({
     },
     slider: {
         marginTop: 15,
-        overflow: 'visible' // for custom animations
+        // overflow: 'visible' // for custom animations
     },
     sliderContentContainer: {
         paddingVertical: 10, // for custom animation
